@@ -63,15 +63,20 @@ server.post('/api/users', (req, res) => {
     db
         .insert(userInfo)
         .then(user => {
-            res.status(200).json({
-                success: true,
-                user
-            })
+            if (userInfo) {
+                res.status(201).json({
+                    success: true,
+                    user
+                })
+            } else {
+                res.status(400).end()
+            }
+
         })
-        .catch((code, message) => {
+        .catch(() => {
             res.status(code).json({
                 success: false,
-                message
+                errorMessage: 'Please provide name and bio for the user.'
             })
         })
 })
